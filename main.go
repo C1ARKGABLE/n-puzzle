@@ -12,10 +12,9 @@ type game struct {
 	currentBoard, goalBoard []int
 }
 
-func getBoard(size int) []int {
+func getBoard(size int, len int) []int {
 
 	var raw string
-	len := size * size
 
 	board := make([]int, len)
 
@@ -43,6 +42,7 @@ func getBoard(size int) []int {
 
 func getUserInput() (int, []int, []int) {
 	var size int
+	len := size * size
 
 	fmt.Println("Enter a Board Size:")
 
@@ -50,10 +50,12 @@ func getUserInput() (int, []int, []int) {
 		log.Print(" Scan for size failed, due to ", err)
 	}
 
+	fmt.Println("Add your Boards, separate with commas, use 0 as the free space")
+
 	fmt.Println("Enter the starting state:")
-	currentBoard := getBoard(size)
+	currentBoard := getBoard(size, len)
 	fmt.Println("Enter the goal state:")
-	goalBoard := getBoard(size)
+	goalBoard := getBoard(size, len)
 
 	return size, currentBoard, goalBoard
 }
