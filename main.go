@@ -12,11 +12,11 @@ type game struct {
 	currentBoard, goalBoard []int
 }
 
-func getBoard(size int, len int) []int {
+func getBoard(size int, length int) []int {
 
 	var raw string
 
-	board := make([]int, len)
+	board := make([]int, 0)
 
 	for i := 0; i < size; i++ {
 
@@ -27,22 +27,24 @@ func getBoard(size int, len int) []int {
 
 		split := strings.Split(raw, ",")
 
-		for index, element := range split {
+		for _, element := range split {
 			val, err := strconv.ParseInt(element, 10, 0)
 			if err != nil {
 				log.Print(" Conversion failed, due to ", err)
 			}
-			board[index+i] = int(val)
+			board = append(board, int(val))
 
 		}
 
+	}
+	if len(board) != length {
+		log.Print(" Wrong length of board")
 	}
 	return board
 }
 
 func getUserInput() (int, []int, []int) {
 	var size int
-	len := size * size
 
 	fmt.Println("Enter a Board Size:")
 
@@ -50,12 +52,14 @@ func getUserInput() (int, []int, []int) {
 		log.Print(" Scan for size failed, due to ", err)
 	}
 
+	length := size * size
+
 	fmt.Println("Add your Boards, separate with commas, use 0 as the free space")
 
 	fmt.Println("Enter the starting state:")
-	currentBoard := getBoard(size, len)
+	currentBoard := getBoard(size, length)
 	fmt.Println("Enter the goal state:")
-	goalBoard := getBoard(size, len)
+	goalBoard := getBoard(size, length)
 
 	return size, currentBoard, goalBoard
 }
