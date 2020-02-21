@@ -3,16 +3,35 @@ package main
 import (
 	"fmt"
 	"log"
+	"math"
 	"strconv"
 	"strings"
 )
 
 type game struct {
-	size                    int
 	currentBoard, goalBoard []int
+	scores                  map[int]int
+	totalMoves              int
+	sumManhattan            int
+	NilssonScore            int
 }
 
-func getBoard(size int, length int) []int {
+type pair struct {
+	a, b interface{}
+}
+
+const length = 9
+const size = 3
+
+var order = []int{0, 1, 2, 5, 8, 7, 6, 3, 4}
+
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
+}
+func getBoard() []int {
 
 	var raw string
 
@@ -43,36 +62,121 @@ func getBoard(size int, length int) []int {
 	return board
 }
 
-func getUserInput() (int, []int, []int) {
-	var size int
-
-	fmt.Println("Enter a Board Size:")
-
-	if _, err := fmt.Scan(&size); err != nil {
-		log.Print(" Scan for size failed, due to ", err)
-	}
-
-	length := size * size
+func getUserInput() ([]int, []int) {
 
 	fmt.Println("Add your Boards, separate with commas, use 0 as the free space")
 
 	fmt.Println("Enter the starting state:")
-	currentBoard := getBoard(size, length)
+	currentBoard := []int{0, 1, 3, 8, 2, 4, 7, 6, 5} //getBoard()
 	fmt.Println("Enter the goal state:")
-	goalBoard := getBoard(size, length)
+	goalBoard := []int{1, 2, 3, 8, 0, 4, 7, 6, 5} //getBoard()
 
-	return size, currentBoard, goalBoard
+	return currentBoard, goalBoard
+}
+
+func searchVals(list []int, thing int) int {
+	idx := -1
+
+	for i := range list {
+		if list[i] == thing {
+			idx = i
+			break
+		}
+	}
+
+	return idx
+}
+
+func getNilsson(g game) int {
+	val := 0
+
+	for idx, element := range order {
+		if idx == 0 {
+			continue
+		}
+		if element == 4 {
+			val += 3
+			break
+		}
+
+		cur := pair{g.currentBoard[order[idx]], g.currentBoard[order[idx+1]]}
+		goal := pair{g.goalBoard[order[idx]], g.goalBoard[order[idx+1]]}
+
+		if cur != goal {
+			val += 6
+
+		}
+
+	}
+
+	return getManhattan(g) + val
+}
+
+func getManhattan(g game) int {
+	val := 0
+
+	for idx, element := range g.currentBoard {
+
+		if element == 0 {
+			continue
+		}
+
+		goalIdx := searchVals(g.goalBoard, element)
+
+		val += (abs(idx/size-goalIdx/size) + abs(idx%size-goalIdx%size))
+	}
+
+	return val
+}
+
+func getMoves(g game) {
+
+	idx := searchVals(g.currentBoard, 0)
+
+	fmt.Println(idx)
+
+	if idx%size > 1 {
+		fmt.Println("Up")
+
+	} else {
+
+	}
+
+	if idx%size < size {
+		fmt.Println("Down")
+
+	} else {
+
+	}
+
+	if idx/size > 1 {
+		fmt.Println("Left")
+
+	} else {
+
+	}
+
+	if idx/size < size {
+		fmt.Println("Right")
+
+	} else {
+
+	}
+
 }
 
 func main() {
 
-	size, currentBoard, goalBoard := getUserInput()
+	currentBoard, goalBoard := getUserInput()
 
 	g := game{
-		size:         size,
 		currentBoard: currentBoard,
-		goalBoard:    goalBoard}
+		goalBoard:    goalBoard,
+		totalMoves:   0,
+		sumManhattan: int(math.Inf(1)),
+		NilssonScore: int(math.Inf(1))}
 
-	fmt.Println(g.currentBoard)
+	fmt.Println(getNilsson(g))
+	getMoves(g)
 
 }
