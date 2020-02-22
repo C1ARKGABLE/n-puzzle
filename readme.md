@@ -36,91 +36,92 @@ Honestly, we could have picked [any programming language](https://en.wikipedia.o
 
 #### Breakdowns:
 
-1) Puzzle:
-    .| **S** |.||.| **G** |.
-    -|-|-|-|-|-|-
-     1 | 2 | 3 |->| 1 | 2 | 3
-     7 | 4 | 5 |->| 8 | 6 | 4
-     6 | 8 | 0 |->| 7 | 5 | 0
-    1) **Nilsson:** true 
-    **Sequence:** [down left down left up right down right] 
-    **Nodes expanded:** 19 
-    **Nodes visited:** 8
-    1) **Nilsson:** false 
-    **Sequence:** [down left down left up right down right] 
-    **Nodes expanded:** 19 
-    **Nodes visited:** 8
 
-2) Puzzle:
-    .| **S** |.||.| **G** |.
-    -|-|-|-|-|-|-
-     0 | 1 | 3 |->| 1 | 2 | 3
-     8 | 2 | 4 |->| 8 | 0 | 4
-     7 | 6 | 5 |->| 7 | 6 | 5
-    1) **Nilsson:** true 
-    **Sequence:** [left up] 
-    **Nodes expanded:** 2 
-    **Nodes visited:** 2
-    1) **Nilsson:** false 
-    **Sequence:** [left up] 
-    **Nodes expanded:** 2 
-    **Nodes visited:** 2
+.| **S** |.||.| **G** |.
+-|-|-|-|-|-|-
+1 | 2 | 3 |->| 1 | 2 | 3
+7 | 4 | 5 |->| 8 | 6 | 4
+6 | 8 | 0 |->| 7 | 5 | 0
 
-3)  Puzzle:
-    .| **S** |.||.| **G** |.
-    -|-|-|-|-|-|-
-     2 | 8 | 1 |->| 3 | 2 | 1
-     3 | 4 | 6 |->| 8 | 0 | 4
-     7 | 5 | 0 |->| 7 | 5 | 6
-    1) **Nilsson:** true 
-    **Sequence:** [down left up left down right] 
-    **Nodes expanded:** 6 
-    **Nodes visited:** 6
-    1) **Nilsson:** false 
-    **Sequence:** [down left up left down right] 
-    **Nodes expanded:** 6   
+1) **Nilsson:** true 
+**Sequence:** [down left down left up right down right] 
+**Nodes expanded:** 19 
+**Nodes visited:** 8
+1) **Nilsson:** false 
+**Sequence:** [down left down left up right down right] 
+**Nodes expanded:** 19 
+**Nodes visited:** 8
 
-4) Puzzle:
-    .| **S** |.||.| **G** |.
-    -|-|-|-|-|-|-
-     2 | 8 | 3 |->| 1 | 2 | 3
-     1 | 6 | 4 |->| 8 | 0 | 4
-     7 | 0 | 5 |->| 7 | 6 | 5
-    1) **Nilsson:** true 
-    **Sequence:** [down down right up left] 
-    **Nodes expanded:** 6 
-    **Nodes visited:** 5
-    1) **Nilsson:** false 
-    **Sequence:** [down down right up left] 
-    **Nodes expanded:** 6 
-    **Nodes visited:** 5
 
-5) Puzzle:
-    .| **S** |.||.| **G** |.
-    -|-|-|-|-|-|-
-     8 | 0 | 6 |->| 0 | 1 | 2
-     5 | 4 | 7 |->| 3 | 4 | 5
-     2 | 3 | 1 |->| 6 | 7 | 8
-    1) **Nilsson:** true 
-    **Sequence:** [left down right up left down up right up right down left up right up left down left up right down right up left down left down right up down left down right down left up down] 
-    **Nodes expanded:** 1208 
-    **Nodes visited:** 37
-    1) **Nilsson:** false 
-    **Sequence:** [left down right up left down up right up right down left up right up left down left up right down right up left down left down right up down left down right down left up down] 
-    **Nodes expanded:** 1208 
-    **Nodes visited:** 37
+.| **S** |.||.| **G** |.
+-|-|-|-|-|-|-
+ 0 | 1 | 3 |->| 1 | 2 | 3
+ 8 | 2 | 4 |->| 8 | 0 | 4
+ 7 | 6 | 5 |->| 7 | 6 | 5
+1) **Nilsson:** true 
+**Sequence:** [left up] 
+**Nodes expanded:** 2 
+**Nodes visited:** 2
+1) **Nilsson:** false 
+**Sequence:** [left up] 
+**Nodes expanded:** 2 
+**Nodes visited:** 2
 
-6) Puzzle:
-    .| **S** |.||.| **G** |.
-    -|-|-|-|-|-|-
-     1 | 2 | 5 |->| 0 | 1 | 2
-     6 | 3 | 4 |->| 3 | 4 | 5
-     7 | 8 | 0 |->| 6 | 7 | 8
-    1) **Nilsson:** true 
-    **Sequence:** [right right down left left down right right] 
-    **Nodes expanded:** 8 
-    **Nodes visited:** 8
-    1) **Nilsson:** false 
-    **Sequence:** [right right down left left down right right] 
-    **Nodes expanded:** 8 
-    **Nodes visited:** 8
+
+.| **S** |.||.| **G** |.
+-|-|-|-|-|-|-
+ 2 | 8 | 1 |->| 3 | 2 | 1
+ 3 | 4 | 6 |->| 8 | 0 | 4
+ 7 | 5 | 0 |->| 7 | 5 | 6
+1) **Nilsson:** true 
+**Sequence:** [down left up left down right] 
+**Nodes expanded:** 6 
+**Nodes visited:** 6
+1) **Nilsson:** false 
+**Sequence:** [down left up left down right] 
+**Nodes expanded:** 6   
+
+
+.| **S** |.||.| **G** |.
+-|-|-|-|-|-|-
+ 2 | 8 | 3 |->| 1 | 2 | 3
+ 1 | 6 | 4 |->| 8 | 0 | 4
+ 7 | 0 | 5 |->| 7 | 6 | 5
+1) **Nilsson:** true 
+**Sequence:** [down down right up left] 
+**Nodes expanded:** 6 
+**Nodes visited:** 5
+1) **Nilsson:** false 
+**Sequence:** [down down right up left] 
+**Nodes expanded:** 6 
+**Nodes visited:** 5
+
+
+.| **S** |.||.| **G** |.
+-|-|-|-|-|-|-
+ 8 | 0 | 6 |->| 0 | 1 | 2
+ 5 | 4 | 7 |->| 3 | 4 | 5
+ 2 | 3 | 1 |->| 6 | 7 | 8
+1) **Nilsson:** true 
+**Sequence:** [left down right up left down up right up right down left up right up left down left up right down right up left down left down right up down left down right down left up down] 
+**Nodes expanded:** 1208 
+**Nodes visited:** 37
+1) **Nilsson:** false 
+**Sequence:** [left down right up left down up right up right down left up right up left down left up right down right up left down left down right up down left down right down left up down] 
+**Nodes expanded:** 1208 
+**Nodes visited:** 37
+
+
+.| **S** |.||.| **G** |.
+-|-|-|-|-|-|-
+ 1 | 2 | 5 |->| 0 | 1 | 2
+ 6 | 3 | 4 |->| 3 | 4 | 5
+ 7 | 8 | 0 |->| 6 | 7 | 8
+1) **Nilsson:** true 
+**Sequence:** [right right down left left down right right] 
+**Nodes expanded:** 8 
+**Nodes visited:** 8
+1) **Nilsson:** false 
+**Sequence:** [right right down left left down right right] 
+**Nodes expanded:** 8 
+**Nodes visited:** 8
