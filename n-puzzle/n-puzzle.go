@@ -225,7 +225,7 @@ func (g game) getMoves(past [][]int) []game {
 	idx := searchVals(g.currentBoard, 0)
 
 	if idx > 2 {
-		move := moveBoard(g, idx, -3, "up")
+		move := moveBoard(g, idx, -3, "down")
 		if !searchList(past, move.currentBoard) {
 			moves = append(moves, move)
 		}
@@ -234,7 +234,7 @@ func (g game) getMoves(past [][]int) []game {
 	}
 	if idx < 6 {
 
-		move := moveBoard(g, idx, 3, "down")
+		move := moveBoard(g, idx, 3, "up")
 		if !searchList(past, move.currentBoard) {
 			moves = append(moves, move)
 		}
@@ -242,7 +242,7 @@ func (g game) getMoves(past [][]int) []game {
 	}
 	if idx%size != 2 {
 
-		move := moveBoard(g, idx, 1, "right")
+		move := moveBoard(g, idx, 1, "left")
 		if !searchList(past, move.currentBoard) {
 			moves = append(moves, move)
 		}
@@ -250,7 +250,7 @@ func (g game) getMoves(past [][]int) []game {
 	}
 	if idx%size != 0 {
 
-		move := moveBoard(g, idx, -1, "left")
+		move := moveBoard(g, idx, -1, "right")
 		if !searchList(past, move.currentBoard) {
 			moves = append(moves, move)
 		}

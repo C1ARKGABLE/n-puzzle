@@ -58,11 +58,11 @@ Honestly, we could have picked [any programming language](https://en.wikipedia.o
      8 | 2 | 4 |->| 8 | 0 | 4
      7 | 6 | 5 |->| 7 | 6 | 5
     1) **Nilsson:** true 
-    **Sequence:** [right up] 
+    **Sequence:** [left up] 
     **Nodes expanded:** 2 
     **Nodes visited:** 2
     1) **Nilsson:** false 
-    **Sequence:** [right up] 
+    **Sequence:** [left up] 
     **Nodes expanded:** 2 
     **Nodes visited:** 2
 
@@ -87,11 +87,11 @@ Honestly, we could have picked [any programming language](https://en.wikipedia.o
      1 | 6 | 4 |->| 8 | 0 | 4
      7 | 0 | 5 |->| 7 | 6 | 5
     1) **Nilsson:** true 
-    **Sequence:** [start up down left down right] 
+    **Sequence:** [down down right up left] 
     **Nodes expanded:** 6 
     **Nodes visited:** 5
     1) **Nilsson:** false 
-    **Sequence:** [start up down left down right] 
+    **Sequence:** [down down right up left] 
     **Nodes expanded:** 6 
     **Nodes visited:** 5
 
@@ -117,10 +117,10 @@ Honestly, we could have picked [any programming language](https://en.wikipedia.o
      6 | 3 | 4 |->| 3 | 4 | 5
      7 | 8 | 0 |->| 6 | 7 | 8
     1) **Nilsson:** true 
-    **Sequence:** [left left up right right up left left] 
+    **Sequence:** [right right down left left down right right] 
     **Nodes expanded:** 8 
     **Nodes visited:** 8
     1) **Nilsson:** false 
-    **Sequence:** [left left up right right up left left] 
+    **Sequence:** [right right down left left down right right] 
     **Nodes expanded:** 8 
     **Nodes visited:** 8
