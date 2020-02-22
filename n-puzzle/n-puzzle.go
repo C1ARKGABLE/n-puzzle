@@ -77,11 +77,12 @@ func yesNo() bool {
 
 func getUserInput() ([]int, []int, bool) {
 	NilssonIn := true
-	// currentBoard := []int{0, 1, 3, 8, 2, 4, 7, 6, 5}
-	// goalBoard := []int{1, 2, 3, 8, 0, 4, 7, 6, 5}
 
-	currentBoard := []int{1, 2, 3, 7, 4, 5, 6, 8, 0}
-	goalBoard := []int{1, 2, 3, 8, 6, 4, 7, 5, 0}
+	currentBoard := []int{1, 2, 5, 6, 3, 4, 7, 8, 0}
+	goalBoard := []int{0, 1, 2, 3, 4, 5, 6, 7, 8}
+
+	// currentBoard := []int{1, 2, 3, 7, 4, 5, 6, 8, 0}
+	// goalBoard := []int{1, 2, 3, 8, 6, 4, 7, 5, 0}
 
 	fmt.Println("Use defaults? (y/n)")
 	if !yesNo() {
@@ -109,6 +110,18 @@ func searchVals(list []int, thing int) int {
 	}
 
 	return idx
+}
+
+func searchList(list [][]int, thing []int) bool {
+	for _, i := range list {
+		for j := range i {
+			if i[j] != thing[j] {
+				return false
+			}
+
+		}
+	}
+	return true
 }
 
 func getNilsson(g game) int {
@@ -194,45 +207,53 @@ func moveBoard(g game, idx int, dif int, move string) game {
 	return newG
 
 }
-func printBoard(g []int) {
-	space := "- - - - - - -"
+func printBoard(g game) {
+	space := "- - - - - - -  - - - - - - -"
 	fmt.Println(space)
 
 	for i := 0; i < length; i += 3 {
-		fmt.Println("|", g[i], "|", g[i+1], "|", g[i+2], "|")
+		fmt.Println("|", g.currentBoard[i], "|", g.currentBoard[i+1], "|", g.currentBoard[i+2], "|->|", g.goalBoard[i], "|", g.goalBoard[i+1], "|", g.goalBoard[i+2], "|")
 		fmt.Println(space)
 	}
 
 }
 
-func (g game) getMoves() []game {
+func (g game) getMoves(past [][]int) []game {
 
 	moves := []game{}
 
 	idx := searchVals(g.currentBoard, 0)
 
 	if idx > 2 {
+		move := moveBoard(g, idx, -3, "up")
+		if !searchList(past, move.currentBoard) {
+			moves = append(moves, move)
+		}
 
-		move := moveBoard(g, idx, -3, "down")
-		moves = append(moves, move)
 		//up
 	}
 	if idx < 6 {
 
-		move := moveBoard(g, idx, 3, "up")
-		moves = append(moves, move)
+		move := moveBoard(g, idx, 3, "down")
+		if !searchList(past, move.currentBoard) {
+			moves = append(moves, move)
+		}
 		//down
 	}
-	if idx != 2 && idx != 5 && idx != 8 {
+	if idx%size != 2 {
 
-		move := moveBoard(g, idx, 1, "left")
-		moves = append(moves, move)
+		move := moveBoard(g, idx, 1, "right")
+		if !searchList(past, move.currentBoard) {
+			moves = append(moves, move)
+		}
 		//left
 	}
-	if idx != 0 && idx != 3 && idx != 6 {
+	if idx%size != 0 {
 
-		move := moveBoard(g, idx, -1, "right")
-		moves = append(moves, move)
+		move := moveBoard(g, idx, -1, "left")
+		if !searchList(past, move.currentBoard) {
+			moves = append(moves, move)
+		}
 		//right
 	}
 
@@ -244,6 +265,10 @@ func getLowest(moves []game) (game, []game) {
 	sort.Slice(moves, func(i, j int) bool {
 		return moves[i].f > moves[j].f
 	})
+
+	if len(moves) < 2 {
+		return game{}, []game{}
+	}
 
 	return moves[len(moves)-1], moves[:len(moves)-1]
 
@@ -257,31 +282,33 @@ func main() {
 		currentBoard: currentBoard,
 		goalBoard:    goalBoard,
 		totalMoves:   0,
-		nilssonIn:    nilssonIn}
+		nilssonIn:    nilssonIn,
+		moves:        []string{}}
 
 	g = g.updateScores()
-	fmt.Println("Starting point")
-	printBoard(g.currentBoard)
+
+	printBoard(g)
 
 	var movesQueue []game
+	var pastStates [][]int
+	nodes := 0
 
 	for (3 < g.nilssonScore && g.nilssonIn) || (g.manhattanScore > 0 && !g.nilssonIn) {
 
-		for _, i := range g.getMoves() {
+		for _, i := range g.getMoves(pastStates) {
 			movesQueue = append(movesQueue, i)
 
 		}
-
-		g, movesQueue = getLowest(append(movesQueue, g.getMoves()...))
+		pastStates = append(pastStates, g.currentBoard)
+		g, movesQueue = getLowest(append(movesQueue, g.getMoves(pastStates)...))
+		nodes++
 		if len(movesQueue) < 1 {
-			log.Fatalln("Puzzle is unsolvable")
+			fmt.Println("Unsolvable")
+			break
 		}
 
 	}
 
-	fmt.Println("GOAL!")
-	printBoard(g.currentBoard)
-	fmt.Println(g.moves)
-	fmt.Println(g.totalMoves)
+	fmt.Println("Sequence:", g.moves, "\nNodes expanded:", nodes, "\nNodes visited:", g.totalMoves)
 
 }
