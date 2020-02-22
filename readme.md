@@ -36,7 +36,7 @@ Honestly, we could have picked [any programming language](https://en.wikipedia.o
 
 #### Breakdowns:
 
-1)
+1) Puzzle:
     .| **S** |.||.| **G** |.
     -|-|-|-|-|-|-
      1 | 2 | 3 |->| 1 | 2 | 3
@@ -51,7 +51,7 @@ Honestly, we could have picked [any programming language](https://en.wikipedia.o
     **Nodes expanded:** 19 
     **Nodes visited:** 8
 
-2) 
+2) Puzzle:
     .| **S** |.||.| **G** |.
     -|-|-|-|-|-|-
      0 | 1 | 3 |->| 1 | 2 | 3
@@ -66,7 +66,7 @@ Honestly, we could have picked [any programming language](https://en.wikipedia.o
     **Nodes expanded:** 2 
     **Nodes visited:** 2
 
-3)  
+3)  Puzzle:
     .| **S** |.||.| **G** |.
     -|-|-|-|-|-|-
      2 | 8 | 1 |->| 3 | 2 | 1
@@ -80,7 +80,7 @@ Honestly, we could have picked [any programming language](https://en.wikipedia.o
     **Sequence:** [down left up left down right] 
     **Nodes expanded:** 6   
 
-4) 
+4) Puzzle:
     .| **S** |.||.| **G** |.
     -|-|-|-|-|-|-
      2 | 8 | 3 |->| 1 | 2 | 3
@@ -95,7 +95,7 @@ Honestly, we could have picked [any programming language](https://en.wikipedia.o
     **Nodes expanded:** 6 
     **Nodes visited:** 5
 
-5) 
+5) Puzzle:
     .| **S** |.||.| **G** |.
     -|-|-|-|-|-|-
      8 | 0 | 6 |->| 0 | 1 | 2
@@ -110,7 +110,7 @@ Honestly, we could have picked [any programming language](https://en.wikipedia.o
     **Nodes expanded:** 1208 
     **Nodes visited:** 37
 
-6) 
+6) Puzzle:
     .| **S** |.||.| **G** |.
     -|-|-|-|-|-|-
      1 | 2 | 5 |->| 0 | 1 | 2
