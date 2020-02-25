@@ -36,7 +36,6 @@ Honestly, we could have picked [any programming language](https://en.wikipedia.o
 
 #### Breakdowns:
 
-
 .| **S** |.||.| **G** |.
 -|-|-|-|-|-|-
 1 | 2 | 3 |->| 1 | 2 | 3

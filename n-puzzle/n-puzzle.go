@@ -1,5 +1,6 @@
 package main
 
+// Imports the necessary packages
 import (
 	"fmt"
 	"log"
@@ -8,6 +9,17 @@ import (
 	"strings"
 )
 
+// Search order for the Nilsson Index. Search the grid in a clockwise manner
+// 0,1,2
+// 3,4,5
+// 6,7,8
+var order = []int{0, 1, 2, 5, 8, 7, 6, 3, 4}
+
+// Default sizes of the board... Slice must be 9 ints long [8]int. Width of board is 3
+const length = 9
+const width = 3
+
+// Main structure for keeping track of the game board and moves
 type game struct {
 	currentBoard, goalBoard []int
 	totalMoves              int
@@ -18,16 +30,13 @@ type game struct {
 	moves                   []string
 }
 
+// Pair or tuple type group... Python brain wants to use Python data types
 type pair struct {
 	a, b interface{}
 }
 
-const length = 9
-const size = 3
-
-var order = []int{0, 1, 2, 5, 8, 7, 6, 3, 4}
-
 func abs(x int) int {
+	// Abolute value of two ints... Idk why Go doesn't have this
 	if x < 0 {
 		return -x
 	}
@@ -35,57 +44,64 @@ func abs(x int) int {
 }
 
 func getBoard() []int {
-
+	// This gets a board input from the user
 	var raw string
 
 	board := make([]int, 0)
 
-	for i := 0; i < size; i++ {
+	for i := 0; i < width; i++ {
+		// For each row
 
 		fmt.Println("	Row", i, ":")
+		// Grab string values. seperated by commas.
 		if _, err := fmt.Scan(&raw); err != nil {
 			log.Print(" Scan for row failed, due to ", err)
 		}
 
+		// Split the string into a slice of strings
 		split := strings.Split(raw, ",")
 
 		for _, element := range split {
+			// For each element in slice of strings convert to int
 			val, err := strconv.ParseInt(element, 10, 0)
 			if err != nil {
 				log.Print(" Conversion failed, due to ", err)
 			}
+			// Add the int to a board (aka slice of ints)
 			board = append(board, int(val))
 
 		}
 
 	}
+	// Check if the user is inputing more or less values than they should
 	if len(board) != length {
 		log.Print(" Wrong length of board")
 	}
+	// Yay, this is now a board
 	return board
 }
 
 func yesNo() bool {
+	// This asks the user a yes or no question and returns a boolean answer.
 	var raw string
 
 	if _, err := fmt.Scan(&raw); err != nil {
-		log.Print(" Scan for row failed, due to ", err)
+		log.Print(" Scanning", err)
 	}
 
 	return string(raw[0]) == "y" || string(raw[0]) == "Y"
 }
 
 func getUserInput() ([]int, []int, bool) {
-	NilssonIn := true
 
+	// Default values:
+	NilssonIn := true
 	currentBoard := []int{1, 2, 5, 6, 3, 4, 7, 8, 0}
 	goalBoard := []int{0, 1, 2, 3, 4, 5, 6, 7, 8}
 
-	// currentBoard := []int{1, 2, 3, 7, 4, 5, 6, 8, 0}
-	// goalBoard := []int{1, 2, 3, 8, 6, 4, 7, 5, 0}
-
 	fmt.Println("Use defaults? (y/n)")
 	if !yesNo() {
+		// If user wants to enter non-default values, ask these questions:
 		fmt.Println("Would you like to use Nilsson scoring as the heuristic? (y/n)")
 		NilssonIn = yesNo()
 		fmt.Println("Add your Boards, separate with commas, use 0 as the free space")
@@ -95,11 +111,12 @@ func getUserInput() ([]int, []int, bool) {
 		goalBoard = getBoard()
 
 	}
-
+	// Return stuff
 	return currentBoard, goalBoard, NilssonIn
 }
 
 func searchVals(list []int, thing int) int {
+	// Find index
 	idx := -1
 
 	for i := range list {
@@ -160,7 +177,7 @@ func getManhattan(g game) int {
 
 		goalIdx := searchVals(g.goalBoard, element)
 
-		val += (abs(idx/size-goalIdx/size) + abs(idx%size-goalIdx%size))
+		val += (abs(idx/width-goalIdx/width) + abs(idx%width-goalIdx%width))
 	}
 
 	return val
@@ -240,7 +257,7 @@ func (g game) getMoves(past [][]int) []game {
 		}
 		//down
 	}
-	if idx%size != 2 {
+	if idx%width != 2 {
 
 		move := moveBoard(g, idx, 1, "left")
 		if !searchList(past, move.currentBoard) {
@@ -248,7 +265,7 @@ func (g game) getMoves(past [][]int) []game {
 		}
 		//left
 	}
-	if idx%size != 0 {
+	if idx%width != 0 {
 
 		move := moveBoard(g, idx, -1, "right")
 		if !searchList(past, move.currentBoard) {
