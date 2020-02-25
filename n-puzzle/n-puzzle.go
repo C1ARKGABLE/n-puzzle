@@ -95,9 +95,10 @@ func yesNo() bool {
 func getUserInput() ([]int, []int, bool) {
 
 	// Default values:
-	NilssonIn := true
-	currentBoard := []int{1, 2, 5, 6, 3, 4, 7, 8, 0}
-	goalBoard := []int{0, 1, 2, 3, 4, 5, 6, 7, 8}
+	NilssonIn := false
+
+	currentBoard := []int{8, 6, 7, 2, 5, 4, 3, 0, 1}
+	goalBoard := []int{1, 2, 3, 4, 5, 6, 7, 8, 0}
 
 	fmt.Println("Use defaults? (y/n)")
 	if !yesNo() {
@@ -115,12 +116,12 @@ func getUserInput() ([]int, []int, bool) {
 	return currentBoard, goalBoard, NilssonIn
 }
 
-func searchVals(list []int, thing int) int {
-	// Find index
+func searchSlice(s1 []int, thing int) int {
+	// Find index of int in a slice
 	idx := -1
 
-	for i := range list {
-		if list[i] == thing {
+	for i := range s1 {
+		if s1[i] == thing {
 			idx = i
 			break
 		}
@@ -129,19 +130,36 @@ func searchVals(list []int, thing int) int {
 	return idx
 }
 
-func searchList(list [][]int, thing []int) bool {
-	for _, i := range list {
-		for j := range i {
-			if i[j] != thing[j] {
-				return false
-			}
+func compareSlice(s1 []int, s2 []int) bool {
+	// Compare two slices...
+	// If they are the same at all indices:
+	// return true
+	// else return false
 
+	for idx := range s1 {
+		if s1[idx] != s2[idx] {
+			return false
 		}
 	}
 	return true
 }
 
+func searchList(s1 [][]int, s2 []int) bool {
+	// Is a slice in a list of slices?
+	found := false
+	for _, i := range s1 {
+		found = found || compareSlice(i, s2)
+	}
+	return found
+}
+
 func getNilsson(g game) int {
+	// Search clockwise around the board.
+	// Pair current and next state clockwise together
+	// If the pair is the same in the current state as in the goal state?
+	// If not, score increases by six
+	// If not, no increase
+	// Add score to the manhattan distance, return
 	val := 0
 
 	for idx := range order {
@@ -175,7 +193,7 @@ func getManhattan(g game) int {
 			continue
 		}
 
-		goalIdx := searchVals(g.goalBoard, element)
+		goalIdx := searchSlice(g.goalBoard, element)
 
 		val += (abs(idx/width-goalIdx/width) + abs(idx%width-goalIdx%width))
 	}
@@ -184,6 +202,7 @@ func getManhattan(g game) int {
 }
 
 func (g game) updateScores() game {
+
 	if g.nilssonIn {
 		g.nilssonScore = getNilsson(g)
 		g.f = g.nilssonScore + g.totalMoves
@@ -193,7 +212,6 @@ func (g game) updateScores() game {
 	}
 
 	return g
-
 }
 
 func moveBoard(g game, idx int, dif int, move string) game {
@@ -222,24 +240,32 @@ func moveBoard(g game, idx int, dif int, move string) game {
 	newG.moves = append(newG.moves, move)
 
 	return newG
-
 }
-func printBoard(g game) {
-	space := "- - - - - - -  - - - - - - -"
-	fmt.Println(space)
 
-	for i := 0; i < length; i += 3 {
-		fmt.Println("|", g.currentBoard[i], "|", g.currentBoard[i+1], "|", g.currentBoard[i+2], "|->|", g.goalBoard[i], "|", g.goalBoard[i+1], "|", g.goalBoard[i+2], "|")
+func printBoard(g game, md bool) {
+
+	if md {
+		fmt.Println(".| **S** |.||.| **G** |.")
+		fmt.Println("-|-|-|-|-|-|-")
+		for i := 0; i < length; i += 3 {
+			fmt.Println(g.currentBoard[i], "|", g.currentBoard[i+1], "|", g.currentBoard[i+2], "|->|", g.goalBoard[i], "|", g.goalBoard[i+1], "|", g.goalBoard[i+2])
+		}
+	} else {
+		space := "- - - - - - -  - - - - - - -"
 		fmt.Println(space)
-	}
 
+		for i := 0; i < length; i += 3 {
+			fmt.Println("|", g.currentBoard[i], "|", g.currentBoard[i+1], "|", g.currentBoard[i+2], "|->|", g.goalBoard[i], "|", g.goalBoard[i+1], "|", g.goalBoard[i+2], "|")
+			fmt.Println(space)
+		}
+	}
 }
 
 func (g game) getMoves(past [][]int) []game {
 
 	moves := []game{}
 
-	idx := searchVals(g.currentBoard, 0)
+	idx := searchSlice(g.currentBoard, 0)
 
 	if idx > 2 {
 		move := moveBoard(g, idx, -3, "down")
@@ -275,20 +301,19 @@ func (g game) getMoves(past [][]int) []game {
 	}
 
 	return moves
-
 }
+
 func getLowest(moves []game) (game, []game) {
 
 	sort.Slice(moves, func(i, j int) bool {
 		return moves[i].f > moves[j].f
 	})
 
-	if len(moves) < 2 {
+	if len(moves) < 1 {
 		return game{}, []game{}
 	}
 
 	return moves[len(moves)-1], moves[:len(moves)-1]
-
 }
 
 func main() {
@@ -304,22 +329,25 @@ func main() {
 
 	g = g.updateScores()
 
-	printBoard(g)
+	printBoard(g, true)
 
 	var movesQueue []game
 	var pastStates [][]int
 	nodes := 0
 
-	for (3 < g.nilssonScore && g.nilssonIn) || (g.manhattanScore > 0 && !g.nilssonIn) {
+	for !compareSlice(g.currentBoard, g.goalBoard) {
 
 		for _, i := range g.getMoves(pastStates) {
 			movesQueue = append(movesQueue, i)
 
 		}
 		pastStates = append(pastStates, g.currentBoard)
+
 		g, movesQueue = getLowest(append(movesQueue, g.getMoves(pastStates)...))
+
 		nodes++
-		if len(movesQueue) < 1 {
+
+		if len(movesQueue) < 2 {
 			fmt.Println("Unsolvable")
 			break
 		}
@@ -327,5 +355,4 @@ func main() {
 	}
 
 	fmt.Println("Sequence:", g.moves, "\nNodes expanded:", nodes, "\nNodes visited:", g.totalMoves)
-
 }
