@@ -79,6 +79,7 @@ Honestly, we could have picked [any programming language](https://en.wikipedia.o
 * **Nilsson:** false 
 **Sequence of Moves:** [down left up left down right] 
 **Nodes expanded:** 6   
+**Nodes visited:** 6
 
 
 .| **S** |.||.| **G** |.
