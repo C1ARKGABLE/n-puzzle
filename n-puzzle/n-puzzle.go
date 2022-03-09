@@ -97,6 +97,8 @@ func getUserInput() ([]int, []int, bool) {
 	// Default values:
 	NilssonIn := false
 
+	// This is a test
+
 	currentBoard := []int{8, 6, 7, 2, 5, 4, 3, 0, 1}
 	goalBoard := []int{1, 2, 3, 4, 5, 6, 7, 8, 0}
 
